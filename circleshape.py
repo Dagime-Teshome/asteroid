@@ -19,11 +19,17 @@ class CircleShape(pygame.sprite.Sprite):
         # must override
         pass
 
-    def update(self, dt: float) -> None:
-        # must override
-        pass
+   
     def collides_with(self, other:"CircleShape") -> bool:
         distance = self.position.distance_to(other.position);
         if distance < self.radius + other.radius:
             return True
         return False
+    # in CircleShape
+    def is_out_of_bounds(self) -> bool:
+        return (self.position.x < -self.radius or self.position.x > SCREEN_WIDTH + self.radius or
+                self.position.y < -self.radius or self.position.y > SCREEN_HEIGHT + self.radius)
+
+    def update(self, dt: float) -> None:
+        if self.is_out_of_bounds():
+            self.kill()
